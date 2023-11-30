@@ -1,0 +1,491 @@
+swagger: '2.0'
+info:
+  title: XRide API
+  version: 1.0.0
+  # Admin Paths
+paths:  
+# Login Path
+  /api/v1/webservice/xride/auth/EmailUserLogin:
+    post:
+      summary: Email User Login
+      description: Login a user with their email and password.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: User email address.
+              password:
+                type: string
+                description: User password.
+                format: password
+      responses:
+        200:
+          description: User Login Success
+        400:
+          description: Invalid Credentials
+      tags: 
+        - Admin User
+  /api/v1/webservice/xride/auth/GoogleUserLogin:
+    post:
+      summary: Google User Login
+      description: Login a user with their email and password.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: User email address.
+      responses:
+        200:
+          description: User Login Success
+        400:
+          description: Invalid Credentials
+      tags: 
+        - Admin User       
+# Logout Path
+  /api/v1/webservice/xride/auth/UserLogout/{id}:
+    post:
+      summary: User Logout
+      description: Logout a user by their ID.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: The ID of the user to log out.
+          required: true
+          type: string
+      responses:
+        200:
+          description: User Logout Success
+        400:
+          description: Invalid ID or Logout Failed
+      tags:
+        - Admin User
+# verify login Path
+  /api/v1/webservice/xride/auth/VerifyOTP:
+    post:
+      summary: User Login Verification
+      description: Verify login by the OTP code sent by email.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Request body containing OTP code.
+          required: true
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                description: OTP Code.
+      responses:
+        200:
+          description: Login Verified Successfully
+        400:
+          description: No Code or Wrong OTP Code
+      tags: 
+        - Admin User
+# sign up Path
+  /api/v1/webservice/xride/auth/UserSignup:
+    post:
+      summary: Create New Account
+      description: Place information and role to create a new account.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Request body containing account creation data.
+          required: true
+          schema:
+            type: object
+            properties:
+              first_name:
+                type: string
+                description: First name.
+              last_name:
+                type: string
+                description: Last name.
+              role:
+                type: string
+                description: Admin or user.
+                enum:
+                  - admin
+                  - user
+              email:
+                type: string
+                description: Email address.
+              confirm_email:
+                type: string
+                description: Confirm email address.
+              password:
+                type: string
+                description: User password.
+              confirm_password:
+                type: string
+                description: Confirm password.
+                format: password
+      responses:
+        201:
+          description: Account Created Successfully
+        400:
+          description: Invalid Credentials
+      tags: 
+        - Admin User
+# resend otp Path
+  /api/v1/webservice/xride/auth/SendVerificationCode/{email}:
+    post:
+      summary: Send OTP
+      description: Send OTP for user login verification.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: email
+          description: The email address for which OTP should be resent.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OTP Resent Successfully
+        400:
+          description: Invalid Email or Resending Failed
+      tags:
+        - Admin User
+# resend otp Path
+  /api/v1/webservice/xride/auth/GetUser/{id}:
+    get:
+      summary: Get User
+      description: Get user by id
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: The id for which user should be retrieved.
+          required: true
+          type: string
+      responses:
+        200:
+          description: User Retrieved Successfully
+        400:
+          description: Bad Request
+      tags:
+        - Admin User        
+# Active Categories Path
+  /api/v1/webservice/xride/categories/GetActiveCategories:
+    get:
+      summary: Get active categories
+      description: Gets all active categories
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: List of active categories retrieved successfully
+        400:
+          description: Bad Request
+        404:
+          description: Categories not found
+      tags:
+        - Category
+# Specific Active Category Path
+  /api/v1/webservice/xride/categories/get-specific-active-category/{id}:
+    get:
+      summary: Get a specific active category by ID
+      description: Retrieves a specific active category by its ID.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: The ID of the category to retrieve.
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Category retrieved successfully
+          schema:
+            $ref: '#/definitions/Category' # Reference to the Category definition
+        404:
+          description: Category not found
+      tags:
+        - Category
+    # Admin Paths
+
+  /api/v1/webservice/xride-business/auth/login:
+    post:
+      summary: User Login
+      description: Login a user with their email and password.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: User email address.
+              password:
+                type: string
+                description: User password.
+                format: password
+      responses:
+        200:
+          description: User Login Success
+        400:
+          description: Invalid Credentials
+      tags: 
+        - Car Rental User
+# Logout Path
+  /api/v1/webservice/xride-business/auth/logout/{id}:
+    post:
+      summary: User Logout
+      description: Logout a user by their ID.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: The ID of the user to log out.
+          required: true
+          type: integer
+      responses:
+        200:
+          description: User Logout Success
+        400:
+          description: Invalid ID or Logout Failed
+      tags:
+        - Car Rental User
+# verify login Path
+  /api/v1/webservice/xride-business/auth/login/verify:
+    post:
+      summary: User Login Verification
+      description: Verify login by the OTP code sent by email.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Request body containing OTP code.
+          required: true
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                description: OTP Code.
+      responses:
+        200:
+          description: Login Verified Successfully
+        400:
+          description: No Code or Wrong OTP Code
+      tags: 
+        - Car Rental User
+
+# resend otp Path
+  /api/v1/webservice/xride-business/auth/resend-otp/{email}:
+    post:
+      summary: Resend OTP
+      description: Resend OTP for user login verification.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: email
+          description: The email address for which OTP should be resent.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OTP Resent Successfully
+        400:
+          description: Invalid Email or Resending Failed
+      tags:
+        - Car Rental User   
+
+#  Get All Bookings for car rental users path         
+  /api/v1/webservice/xride-business/bookings/get-all/{car_rental_id}:
+      get:
+        summary: Get All Active Bookings
+        description: Get all active bookings for a specific car rental.
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - in: path
+            name: car_rental_id
+            description: The ID of the car rental for which bookings should be retrieved.
+            required: true
+            type: integer
+        responses:
+          200:
+            description: List of active bookings retrieved successfully
+          400:
+            description: Bad Request
+          404:
+            description: Bookings not found
+        tags:
+          - Booking
+
+# get one booking for car rental user path
+  /api/v1/webservice/xride-business/bookings/get-one/{booking_id}/{car_rental_id}:
+      get:
+        summary: Get One Active Booking
+        description: Get one active booking by its ID for a specific car rental.
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - in: path
+            name: booking_id
+            description: The ID of the booking to retrieve.
+            required: true
+            type: integer
+          - in: path
+            name: car_rental_id
+            description: The ID of the car rental associated with the booking.
+            required: true
+            type: integer
+        responses:
+          200:
+            description: Active booking retrieved successfully
+          400:
+            description: Bad Request
+          404:
+            description: Booking not found
+        tags:
+          - Booking
+          
+# get Room Path
+  /api/v1/webservice/xride-business/rooms/get-room/{car_rental_id}/{roomId}:
+      get:
+        summary: Get Room Details
+        description: Get details of a specific room associated with a car rental.
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - in: path
+            name: car_rental_id
+            description: The ID of the car rental associated with the room.
+            required: true
+            type: integer
+          - in: path
+            name: roomId
+            description: The ID of the room to retrieve.
+            required: true
+            type: integer
+        responses:
+          200:
+            description: Room details retrieved successfully
+          400:
+            description: Bad Request
+          404:
+            description: Room not found
+        tags:
+          - Room
+  # get sepecific room path
+  /api/v1/webservice/xride-business/rooms/get-rooms/{car_rental_id}:
+    get:
+      summary: Get Rooms
+      description: Get a list of rooms associated with a car rental.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: car_rental_id
+          description: The ID of the car rental to retrieve rooms for.
+          required: true
+          type: integer
+      responses:
+        200:
+          description: List of rooms retrieved successfully
+        400:
+          description: Bad Request
+        404:
+          description: Rooms not found
+      tags:
+        - Room
+
+  # Database Test Path
+  /api/v1/connection/test:
+    get:
+      summary: Get Database Status
+      description: Retrieves connection status.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Database connection successful
+        500:
+          description: Unable to connect to the database
+      tags:
+        - Database
+
+  # Database Test Path
+  /api/v1/webservice/xride/auth/GetTermsVersion:
+    get:
+      summary: Get Terms Version
+      description: Retrieves current terms version.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Retrieved terms version successfully
+        500:
+          description: Bad Request
+      tags:
+        - Terms Version
